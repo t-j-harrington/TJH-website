@@ -1,3 +1,7 @@
 :root {
   --sl-font: 'Sora', serif;
 }
+
+a.sl-flex {
+  color: #ff0000; /* Set your desired color */
+}

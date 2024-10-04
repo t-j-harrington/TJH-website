@@ -1,8 +1,11 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { RenderTemplateResult } from 'astro/runtime/server/render/astro/render-template.js';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://www.tjharrington.co.uk',
+	base: 'TJH_website',
 	integrations: [
 		starlight({
 			title: 'Thomas James Harrington',
@@ -20,7 +23,7 @@ export default defineConfig({
 			},
 			social: {
 				github: 'https://github.com/t-j-harrington',
-				linkedin: ''
+				linkedin: 'https://www.linkedin.com/in/thethomasharrington/'
 			},
 			sidebar: [
 				{
@@ -29,17 +32,22 @@ export default defineConfig({
 						// Each item here is one entry in the navigation menu.
 						{ label: 'Example Guide', slug: 'guides/example' },
 					],
+					collapsed: true,
 				},
 				{
 					label: 'About me',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'CV', slug: 'about-me/cv' },
-					],
+					autogenerate: {directory: 'about-me'},
+					collapsed: true,
+				},
+				{
+					label: 'Portfolio',
+					autogenerate: {directory: 'portfolio'},
+					collapsed: true,
 				},
 				{
 					label: 'Reference',
 					autogenerate: { directory: 'reference' },
+					collapsed: true,
 				},
 			],
 		}),
