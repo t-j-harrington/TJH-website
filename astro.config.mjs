@@ -4,8 +4,7 @@ import { RenderTemplateResult } from 'astro/runtime/server/render/astro/render-t
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://www.tjharrington.co.uk',
-	base: 'TJH_website',
+	site: 'https://tjharrington.co.uk',
 	integrations: [
 		starlight({
 			title: 'Thomas James Harrington',
