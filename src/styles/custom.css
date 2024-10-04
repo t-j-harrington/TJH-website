@@ -5,3 +5,8 @@
 a.sl-flex {
   color: #ff0000; /* Set your desired color */
 }
+
+a.sl-link-button.primary {
+  background-color: #ff0000; /* Set your desired button background color */
+  border: 2px solid #ff0000; /* Set your desired border color and size */
+}
