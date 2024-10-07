@@ -1,12 +1,29 @@
+/* Dark mode colors. */
 :root {
-  --sl-font: 'Sora', serif;
+	--sl-color-accent-low: #450d08;
+	--sl-color-accent: #ff0000;
+	--sl-color-accent-high: #fcb4a8;
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #eceef2;
+	--sl-color-gray-2: #c6c8ce;
+	--sl-color-gray-3: #a0a4ae;
+	--sl-color-gray-4: #545861;
+	--sl-color-gray-5: #353841;
+	--sl-color-gray-6: #24272f;
+	--sl-color-black: #17181c;
 }
-
-a.sl-flex {
-  color: #ff0000; /* Set your desired color */
-}
-
-a.sl-link-button.primary {
-  background-color: #ff0000; /* Set your desired button background color */
-  border: 2px solid #ff0000; /* Set your desired border color and size */
+/* Light mode colors. */
+:root[data-theme='light'] {
+	--sl-color-accent-low: #ffc8bf;
+	--sl-color-accent: #ff0000;
+	--sl-color-accent-high: #640101;
+	--sl-color-white: #17181c;
+	--sl-color-gray-1: #24272f;
+	--sl-color-gray-2: #353841;
+	--sl-color-gray-3: #545861;
+	--sl-color-gray-4: #888b96;
+	--sl-color-gray-5: #c0c2c7;
+	--sl-color-gray-6: #eceef2;
+	--sl-color-gray-7: #f5f6f8;
+	--sl-color-black: #ffffff;
 }
