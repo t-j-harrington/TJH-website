@@ -20,19 +20,12 @@ export default defineConfig({
 				dark: './src/assets/THLogoDark.svg',
 				replacesTitle: true,
 			},
+			favicon: '/srv/assets/THFavicon.svg',
 			social: {
 				github: 'https://github.com/t-j-harrington',
 				linkedin: 'https://www.linkedin.com/in/thethomasharrington/'
 			},
 			sidebar: [
-				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],
-					collapsed: true,
-				},
 				{
 					label: 'About me',
 					autogenerate: {directory: 'about-me'},
@@ -44,8 +37,8 @@ export default defineConfig({
 					collapsed: true,
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'JA > EN Translation',
+					autogenerate: {directory: 'translation'},
 					collapsed: true,
 				},
 			],
