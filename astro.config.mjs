@@ -33,17 +33,17 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'About me',
-					autogenerate: {directory: 'about-me'},
+					autogenerate: {directory: 'About me'},
 					collapsed: true,
 				},
 				{
 					label: 'Portfolio',
-					autogenerate: {directory: 'portfolio'},
+					autogenerate: {directory: 'Portfolio'},
 					collapsed: true,
 				},
 				{
 					label: 'JA > EN Translation',
-					autogenerate: {directory: 'translation'},
+					autogenerate: {directory: 'JA > EN Translation'},
 					collapsed: true,
 				},
 			],
