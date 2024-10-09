@@ -33,7 +33,7 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'About me',
-					autogenerate: {directory: 'about-me'},
+					autogenerate: {directory: 'About me'},
 					collapsed: true,
 				},
 				{
