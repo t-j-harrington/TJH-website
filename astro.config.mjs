@@ -20,7 +20,7 @@ export default defineConfig({
 				dark: './src/assets/THLogoDark.svg',
 				replacesTitle: true,
 			},
-			favicon: '/public/Favicon.svg',
+			favicon: './Favicon.svg',
 			social: {
 				github: 'https://github.com/t-j-harrington',
 				linkedin: 'https://www.linkedin.com/in/thethomasharrington/'
