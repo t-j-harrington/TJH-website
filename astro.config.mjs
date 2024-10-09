@@ -33,12 +33,12 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'About me',
-					autogenerate: {directory: 'About me'},
+					autogenerate: {directory: 'about-me'},
 					collapsed: true,
 				},
 				{
 					label: 'Portfolio',
-					autogenerate: {directory: 'Portfolio'},
+					autogenerate: {directory: 'portfolio'},
 					collapsed: true,
 				},
 				{
