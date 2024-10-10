@@ -33,17 +33,41 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'About me',
-					autogenerate: {directory: 'About me'},
+					items: [
+						{slug: 'about-me/work-history'},
+						{slug: 'about-me/education'},
+						{slug: 'about-me/training'},
+					],
 					collapsed: true,
 				},
 				{
 					label: 'Portfolio',
-					autogenerate: {directory: 'Portfolio'},
-					collapsed: true,
-				},
+					items: [
+						{
+							label: 'TrueLayer',
+							items: [
+								{slug: 'portfolio/truelayer/information-architecture-review'},
+								{slug: 'portfolio/truelayer/insomnia-collection'},
+								{slug: 'portfolio/truelayer/integration-checklists'}
+							],
+							collapsed: true,
+						},
+						{
+							label: 'Anaplan',
+							items: [
+								{slug: 'portfolio/anaplan/calculation-functions-project'},
+								{slug: 'portfolio/anaplan/custom-views-documentation'}
+							],
+							collapsed: true,
+						},
+					]
+				},				
 				{
 					label: 'JA > EN Translation',
-					autogenerate: {directory: 'JA > EN Translation'},
+					items: [
+						{slug: 'ja-en-translation/translation-services'},
+						{slug: 'ja-en-translation/translation-contact-form'}
+					],
 					collapsed: true,
 				},
 			],

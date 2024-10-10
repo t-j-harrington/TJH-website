@@ -1,6 +1,8 @@
 ---
 title: Custom views documentation
 description: I worked as a Technical Writer at Anaplan between December 2018 and July 2022.
+sidebar:
+  order: 1
 banner:
   content: |
     This site is under construction.
