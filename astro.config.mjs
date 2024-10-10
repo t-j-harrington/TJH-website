@@ -38,7 +38,7 @@ export default defineConfig({
 				},
 				{
 					label: 'Portfolio',
-					autogenerate: {directory: 'portfolio'},
+					autogenerate: {directory: 'Portfolio'},
 					collapsed: true,
 				},
 				{
