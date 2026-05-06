@@ -13,7 +13,7 @@
     "@astrojs/starlight": "^0.28.2",
     "@fontsource-variable/sora": "^5.1.0",
     "@fontsource/sora": "^5.1.0",
-    "astro": "^4.15.3",
+    "astro": "^4.16.19",
     "sharp": "^0.32.5"
   }
 }
