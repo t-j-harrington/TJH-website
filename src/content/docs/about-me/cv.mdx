@@ -1,0 +1,25 @@
+---
+title: CV
+description: View or download my CV.
+sidebar:
+  order: 3
+tableOfContents: false
+banner:
+  content: |
+    This site is under construction.
+    Check back over the course of October as I update it.
+---
+
+import { LinkButton } from '@astrojs/starlight/components';
+
+You can view my CV below, or download a copy to keep.
+
+<iframe
+	src="/Thomas-Harrington-CV.pdf"
+	title="Thomas Harrington's CV"
+	width="100%"
+	height="800"
+	style="height: 80vh; min-height: 600px; max-height: 1200px; border: 1px solid var(--sl-color-gray-5); border-radius: 8px;"
+></iframe>
+
+<LinkButton href="/Thomas-Harrington-CV.pdf" download="Thomas-Harrington-CV.pdf" icon="document">Download my CV</LinkButton>

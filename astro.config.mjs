@@ -37,6 +37,7 @@ export default defineConfig({
 						{slug: 'about-me/work-history'},
 						{slug: 'about-me/education'},
 						{slug: 'about-me/training'},
+						{slug: 'about-me/cv'},
 					],
 					collapsed: true,
 				},

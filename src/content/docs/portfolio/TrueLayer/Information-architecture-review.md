@@ -4,6 +4,7 @@ description: I worked as a Technical Writer at Anaplan between December 2018 and
 banner:
   content: |
     This site is under construction.
-    Check back over the course of October as I update it.
+    
+    Check back over the course of Q3 2026 as I update it.
 ---
 Examples of work done at Anaplan with detail.

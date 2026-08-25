@@ -6,7 +6,8 @@ sidebar:
 banner:
   content: |
     This site is under construction.
-    Check back over the course of October as I update it.
+    
+    Check back over the course of Q3 2026 as I update it.
 ---
 
 As a freelancer, I've worked on a wide range of projects with clients over the past decade. These projects include:

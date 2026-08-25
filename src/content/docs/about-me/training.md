@@ -6,7 +6,8 @@ sidebar:
 banner:
   content: |
     This site is under construction.
-    Check back over the course of October as I update it.
+    
+    Check back over the course of Q3 2026 as I update it.
 ---
 
 As a technical writer, I regularly complete training to widen my skillset and also participate in various communities and follow a range of publications.
