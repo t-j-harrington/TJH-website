@@ -16,11 +16,11 @@ export default defineConfig({
 				'./src/styles/custom.css'
 			],
 			logo: {
-				light: './src/assets/THLogoLight.svg',
-				dark: './src/assets/THLogoDark.svg',
+				light: './src/assets/th-logo-light.svg',
+				dark: './src/assets/th-logo-dark.svg',
 				replacesTitle: true,
 			},
-			favicon: './Favicon.svg',
+			favicon: './favicon.svg',
 			social: {
 				github: 'https://github.com/t-j-harrington',
 				linkedin: 'https://www.linkedin.com/in/thethomasharrington/'
@@ -44,6 +44,16 @@ export default defineConfig({
 				{
 					label: 'Portfolio',
 					items: [
+						{
+							label: 'Navro',
+							items: [
+								{slug: 'portfolio/navro/readme-redocly-migration'},
+								{slug: 'portfolio/navro/country-docs-automation'},
+								{slug: 'portfolio/navro/role-based-access-control'},
+								{slug: 'portfolio/navro/openapi-spec-review'}
+							],
+							collapsed: true,
+						},
 						{
 							label: 'TrueLayer',
 							items: [
