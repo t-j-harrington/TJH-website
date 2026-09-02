@@ -1,0 +1,28 @@
+---
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+import proZIconRaw from '../assets/pro-z-icon.svg?raw';
+
+const proZIcon = proZIconRaw.replace(/fill="black"/g, 'fill="currentColor"');
+---
+
+<Default {...Astro.props}><slot /></Default>
+<a href="https://www.proz.com/profile/2297404" rel="me" class="sl-flex">
+	<span class="sr-only">ProZ</span>
+	<Fragment set:html={proZIcon} />
+</a>
+
+<style>
+	a {
+		color: var(--sl-color-text-accent);
+		padding: 0.5em;
+		margin: -0.5em;
+	}
+	a:hover {
+		opacity: 0.66;
+	}
+	a svg {
+		width: 1em;
+		height: 1em;
+		font-size: 1em;
+	}
+</style>

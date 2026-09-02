@@ -16,19 +16,20 @@ export default defineConfig({
 				'./src/styles/custom.css'
 			],
 			logo: {
-				light: './src/assets/THLogoLight.svg',
-				dark: './src/assets/THLogoDark.svg',
+				light: './src/assets/th-logo-light.svg',
+				dark: './src/assets/th-logo-dark.svg',
 				replacesTitle: true,
 			},
-			favicon: './Favicon.svg',
-			social: {
-				github: 'https://github.com/t-j-harrington',
-				linkedin: 'https://www.linkedin.com/in/thethomasharrington/'
-			},
+			favicon: './favicon.svg',
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/t-j-harrington' },
+				{ icon: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/thethomasharrington/' },
+			],
 			components: {
 				// Gets rid of the Previous and Next tiles at the bottom of the page by replacing them with blank content.
-				Pagination: './src/components/RemovePreviousNext.astro'
-				
+				Pagination: './src/components/RemovePreviousNext.astro',
+				// Adds a ProZ icon alongside the built-in GitHub/LinkedIn icons, since ProZ isn't a supported `social` platform.
+				SocialIcons: './src/components/SocialIcons.astro'
 			},
 			sidebar: [
 				{
@@ -44,6 +45,16 @@ export default defineConfig({
 				{
 					label: 'Portfolio',
 					items: [
+						{
+							label: 'Navro',
+							items: [
+								{slug: 'portfolio/navro/readme-redocly-migration'},
+								{slug: 'portfolio/navro/country-docs-automation'},
+								{slug: 'portfolio/navro/role-based-access-control'},
+								{slug: 'portfolio/navro/openapi-spec-review'}
+							],
+							collapsed: true,
+						},
 						{
 							label: 'TrueLayer',
 							items: [
