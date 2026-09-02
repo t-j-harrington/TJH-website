@@ -12,10 +12,160 @@ import { Card } from '@astrojs/starlight/components';
 
 As a company, Navro offers _payout curation_. Put simply, if a client wants to pay a beneficiary anywhere in the world, Navro has a relationship with a variety of banking partners and integrations and routes the payout through the best option.
 
-However, clients often want to route payouts through a specific _payment rail_. For example, some countries might support wire, ACH, and instant payments. However, certain payment purpose require 
+However, clients often want to route payouts through a specific _payment rail_. Some countries support multiple payment rails, such as wire, ACH, and instant payments. However, certain payment purposes require a specific payment rail.
 
-<Card title="Role-based access control" icon="setting">
-The range of countries, payment methods, and features a given Navro client had access to depended on their contract with Navro. This meant that it was necessary to secure the documentation behind a login screen so that we would only present relevant, personalised, documentation to each reader.
+For example, payments with taxes withheld to Romanian beneficiaries require you make the payment over the local payments infrastructure. However, for a cheaper and faster payment, you might use the SEPA Credit payment rail. =
+
+As such, the Navro documentation needed to contain information for over 800 different payment rail and country/territory combinations. This way, the reader can always learn about the options they have for paying each country.
+
+Given the frequency of updates, maintaining these manually as a single person wasn't feasible. So I set about automating the process.
+
+<Card title="Role-based access control" icon="padlock">
+The range of countries, payment methods, and features a given Navro client had access to depended on their contract with Navro.
+
+This meant we needed to secure the documentation behind a login screen and only present relevant, personalised, documentation to each reader.
 
 <a href="/portfolio/navro/role-based-access-control.md" target="_blank" >Learn more about how I implemented role-based access control at Navro</a>.
 </Card>
+
+## Country validation infrastructure
+
+When using Navro, you can choose to make your payouts through a user-friendly user interface or an API. However, they're both driven by the same validation rules, expressed as a JSON file.
+
+### The country validation JSON file
+
+The validation rules JSON file tells you which fields are required and optional, allowed values, as well as regular expression explaining the allowed values for free text fields. Sometimes the response also contains a plain English explanation of the required format too.
+
+The JSON file has a format like this:
+
+```json
+{
+  "data": [
+    {
+      "id": "4a11cba0-2f5f-415d-8190-00353191f3ae",
+      "paymentMethodName": "WIRE",
+      "supportedCurrencies": [
+        "GBP"
+      ],
+      "destinationCountry": "USA",
+      "active": true,
+      "expectedBeneficiaryReceipt": "string",
+      "chargeCodesRules": [
+        {
+          "type": "STANDARD",
+          "currencies": [
+            "GBP"
+          ],
+          "chargeCodes": [
+            "SHA"
+          ]
+        }
+      ],
+      "countryPurposeCodeRequired": true,
+      "referenceRule": {
+        "fieldName": "cityName",
+        "required": true,
+        "regex": "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$",
+        "message": "City name is invalid"
+      },
+      "beneficiaryValidationCriteria": {
+        "beneficiaryAccountTypes": [
+          "SVGS"
+        ],
+        "residentTypes": [
+          "RESIDENT"
+        ],
+        "beneficiaryTypes": [
+          "INDIVIDUAL"
+        ],
+        "addressRules": [
+          {
+            "fieldName": "line1",
+            "required": false,
+            "regex": ""
+          }
+        ],
+        "beneficiaryBankRules": [
+          {
+            "fieldName": "bankName",
+            "required": false,
+            "regex": ""
+          }
+        ],
+        "bankDetailsGroupedRules": [
+          [
+            {
+              "fieldName": "IBAN",
+              "required": true,
+              "regex": ""
+            },
+            {
+              "fieldName": "SWIFT_BIC",
+              "required": true,
+              "regex": ""
+            }
+          ],
+          [
+            {
+              "fieldName": "SWIFT_BIC",
+              "required": true,
+              "regex": ""
+            },
+            {
+              "fieldName": "SORT_CODE",
+              "required": true,
+              "regex": ""
+            }
+          ]
+        ],
+        "walletDetailsRules": [
+          {
+            "fieldName": "wallet_name",
+            "required": false,
+            "regex": ""
+          },
+          {
+            "fieldName": "wallet_msisdn",
+            "required": false,
+            "regex": ""
+          }
+        ],
+        "individualRules": [
+          {
+            "fieldName": "firstName",
+            "required": true,
+            "regex": ""
+          }
+        ],
+        "companyRules": [
+          {
+            "fieldName": "companyName",
+            "required": true,
+            "regex": ""
+          }
+        ]
+      },
+      "provider": "CITI",
+      "walletNames": [
+        "string"
+      ],
+      "walletNetworks": [
+        "string"
+      ],
+      "allowedPurposesOfRemittance": [
+        "BILL_PAYMENTS"
+      ]
+    }
+  ],
+  "pagination": {
+    "limit": 10,
+    "page": 1,
+    "totalItems": 101,
+    "hasNext": true
+  }
+}
+```
+
+You can tell whether a field is required or not by checking the Boolean value against the `required` field. If we had this information, we have everything we need to explain and document each 
+
+## Determining the best way

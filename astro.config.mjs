@@ -21,10 +21,10 @@ export default defineConfig({
 				replacesTitle: true,
 			},
 			favicon: './favicon.svg',
-			social: {
-				github: 'https://github.com/t-j-harrington',
-				linkedin: 'https://www.linkedin.com/in/thethomasharrington/'
-			},
+			social: [
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/t-j-harrington' },
+				{ icon: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/thethomasharrington/' },
+			],
 			components: {
 				// Gets rid of the Previous and Next tiles at the bottom of the page by replacing them with blank content.
 				Pagination: './src/components/RemovePreviousNext.astro',
