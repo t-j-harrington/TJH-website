@@ -27,8 +27,9 @@ export default defineConfig({
 			},
 			components: {
 				// Gets rid of the Previous and Next tiles at the bottom of the page by replacing them with blank content.
-				Pagination: './src/components/RemovePreviousNext.astro'
-				
+				Pagination: './src/components/RemovePreviousNext.astro',
+				// Adds a ProZ icon alongside the built-in GitHub/LinkedIn icons, since ProZ isn't a supported `social` platform.
+				SocialIcons: './src/components/SocialIcons.astro'
 			},
 			sidebar: [
 				{
