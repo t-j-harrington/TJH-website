@@ -36,63 +36,63 @@ When using Navro, you can choose to make your payouts through a user-friendly us
 
 The validation rules JSON file tells you which fields are required and optional, allowed values, as well as regular expression explaining the allowed values for free text fields. Sometimes the response also contains a plain English explanation of the required format too.
 
-The JSON file has a format like this:
+The JSON file has a format like this (I've altered parameter names and formats to be different to Navro's product):
 
 ```json
 {
   "data": [
     {
-      "id": "4a11cba0-2f5f-415d-8190-00353191f3ae",
-      "paymentMethodName": "WIRE",
+      "id": "9f2c7d14-6b3e-42a8-b0d5-1c84ef7a53b9",
+      "paymentMethodName": "LOCAL_TRANSFER",
       "supportedCurrencies": [
-        "GBP"
+        "EUR"
       ],
-      "destinationCountry": "USA",
+      "destinationCountry": "DEU",
       "active": true,
-      "expectedBeneficiaryReceipt": "string",
+      "expectedBeneficiaryReceipt": "T+1",
       "chargeCodesRules": [
         {
-          "type": "STANDARD",
+          "type": "PRIORITY",
           "currencies": [
-            "GBP"
+            "EUR"
           ],
           "chargeCodes": [
-            "SHA"
+            "OUR"
           ]
         }
       ],
-      "countryPurposeCodeRequired": true,
+      "countryPurposeCodeRequired": false,
       "referenceRule": {
-        "fieldName": "cityName",
+        "fieldName": "paymentReference",
         "required": true,
-        "regex": "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$",
-        "message": "City name is invalid"
+        "regex": "^[A-Za-z0-9\\s.,-]{1,35}$",
+        "message": "Payment reference is invalid"
       },
-      "beneficiaryValidationCriteria": {
-        "beneficiaryAccountTypes": [
-          "SVGS"
+      "recipientValidationCriteria": {
+        "recipientAccountTypes": [
+          "CACC"
         ],
         "residentTypes": [
-          "RESIDENT"
+          "NON_RESIDENT"
         ],
-        "beneficiaryTypes": [
-          "INDIVIDUAL"
+        "recipientTypes": [
+          "COMPANY"
         ],
         "addressRules": [
           {
-            "fieldName": "line1",
-            "required": false,
+            "fieldName": "postalCode",
+            "required": true,
             "regex": ""
           }
         ],
-        "beneficiaryBankRules": [
+        "recipientBankRules": [
           {
-            "fieldName": "bankName",
+            "fieldName": "branchName",
             "required": false,
             "regex": ""
           }
         ],
-        "bankDetailsGroupedRules": [
+        "accountIdentifierGroups": [
           [
             {
               "fieldName": "IBAN",
@@ -100,19 +100,19 @@ The JSON file has a format like this:
               "regex": ""
             },
             {
-              "fieldName": "SWIFT_BIC",
-              "required": true,
+              "fieldName": "BIC",
+              "required": false,
               "regex": ""
             }
           ],
           [
             {
-              "fieldName": "SWIFT_BIC",
+              "fieldName": "ACCOUNT_NUMBER",
               "required": true,
               "regex": ""
             },
             {
-              "fieldName": "SORT_CODE",
+              "fieldName": "ROUTING_NUMBER",
               "required": true,
               "regex": ""
             }
@@ -120,52 +120,54 @@ The JSON file has a format like this:
         ],
         "walletDetailsRules": [
           {
-            "fieldName": "wallet_name",
+            "fieldName": "wallet_handle",
             "required": false,
             "regex": ""
           },
           {
-            "fieldName": "wallet_msisdn",
+            "fieldName": "wallet_provider",
             "required": false,
             "regex": ""
           }
         ],
         "individualRules": [
           {
-            "fieldName": "firstName",
+            "fieldName": "lastName",
             "required": true,
             "regex": ""
           }
         ],
         "companyRules": [
           {
-            "fieldName": "companyName",
-            "required": true,
+            "fieldName": "registrationNumber",
+            "required": false,
             "regex": ""
           }
         ]
       },
-      "provider": "CITI",
+      "provider": "PARTNER_BANK_A",
       "walletNames": [
         "string"
       ],
       "walletNetworks": [
         "string"
       ],
-      "allowedPurposesOfRemittance": [
-        "BILL_PAYMENTS"
+      "allowedPaymentPurposes": [
+        "GOODS_AND_SERVICES"
       ]
     }
   ],
   "pagination": {
-    "limit": 10,
-    "page": 1,
-    "totalItems": 101,
+    "limit": 25,
+    "page": 2,
+    "totalItems": 237,
     "hasNext": true
   }
 }
 ```
 
-You can tell whether a field is required or not by checking the Boolean value against the `required` field. If we had this information, we have everything we need to explain and document each 
+You can tell whether a field is required or not by checking the Boolean value against the `required` field. If we had this information, we had everything we need to explain and document each payment rail for each country.
 
-## Determining the best way
+I was able to set up 
+
+## MarkDoc/Redocly research
