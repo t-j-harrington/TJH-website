@@ -1,3 +1,9 @@
+/* Site fonts (loaded via Fontsource in astro.config.mjs). Starlight falls back to the system stacks if these fail to load. */
+:root {
+	--sl-font: 'Atkinson Hyperlegible Next Variable';
+	--sl-font-mono: 'Atkinson Hyperlegible Mono Variable';
+}
+
 /* Dark mode colors. */
 :root {
 	--sl-color-accent-low: #450d08;
