@@ -9,10 +9,11 @@ export default defineConfig({
 		starlight({
 			title: 'Thomas James Harrington',
 			customCss: [
-				// Fontsource files for different font weights
-				'./node_modules/@fontsource/sora/400.css',
-				'./node_modules/@fontsource/sora/600.css',
-				'./node_modules/@fontsource/sora/800.css',
+				// Variable fonts (all weights in one file each); applied via --sl-font / --sl-font-mono in custom.css.
+				'@fontsource-variable/atkinson-hyperlegible-next/wght.css',
+				'@fontsource-variable/atkinson-hyperlegible-next/wght-italic.css',
+				'@fontsource-variable/atkinson-hyperlegible-mono/wght.css',
+				'@fontsource-variable/atkinson-hyperlegible-mono/wght-italic.css',
 				'./src/styles/custom.css'
 			],
 			logo: {
