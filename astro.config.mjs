@@ -30,7 +30,13 @@ export default defineConfig({
 				// Gets rid of the Previous and Next tiles at the bottom of the page by replacing them with blank content.
 				Pagination: './src/components/RemovePreviousNext.astro',
 				// Adds a ProZ icon alongside the built-in GitHub/LinkedIn icons, since ProZ isn't a supported `social` platform.
-				SocialIcons: './src/components/SocialIcons.astro'
+				SocialIcons: './src/components/SocialIcons.astro',
+				// Adds an optional scrolling line of roles (`heroRoles` frontmatter) between the hero title and tagline.
+				Hero: './src/components/Hero.astro',
+				// Replaces the Dark/Light/Auto dropdown with a compact icon button that cycles Auto → Light → Dark.
+				ThemeSelect: './src/components/ThemeToggle.astro',
+				// Makes sidebar group headings (e.g. "Portfolio", "Navro") link to the first page in their group.
+				Sidebar: './src/components/Sidebar.astro'
 			},
 			sidebar: [
 				{

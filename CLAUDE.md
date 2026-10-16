@@ -8,6 +8,8 @@ Astro + Starlight personal/portfolio site (`astro.config.mjs` defines the sideba
 
 Asset and content filenames use lowercase kebab-case throughout (e.g. `headshot-dark.png`, `th-logo-dark.svg`). Keep new files consistent with this.
 
+Before making any visual change (colours, fonts, images, logos, component styling), read `docs/style-guide.md` and follow it. Keep it up to date when styling decisions change.
+
 ## Future project: Windows 95/98 theme toggle (not started, not a priority)
 
 Idea: add a third option to the light/dark mode picker that reskins the site with a retro Windows 95/98 look, as a fun/irreverent easter egg — not core functionality. Research done so far (2026-09-01), retained here so it doesn't need re-deriving:

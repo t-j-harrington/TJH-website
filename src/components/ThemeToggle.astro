@@ -1,0 +1,140 @@
+---
+// Replaces Starlight's Dark/Light/Auto <select> with a single icon button. The icon always shows the theme actually in
+// use (sun or moon), with a small "A" badge while it's following the system setting. Clicking from auto first switches
+// to the opposite of the system theme, so every click visibly changes something: e.g. on a dark system,
+// Auto (dark) → Light → Dark → Auto.
+// Uses the same `starlight-theme` localStorage key and `data-theme` attribute as Starlight, so its anti-FOUC script in
+// ThemeProvider still sets the right theme before first paint.
+import { Icon } from '@astrojs/starlight/components';
+---
+
+<theme-toggle data-choice="auto">
+	<button type="button" aria-label="Theme: auto (follows system)" title="Theme: auto">
+		<Icon name="sun" class="icon light" />
+		<Icon name="moon" class="icon dark" />
+		<span class="auto-badge" aria-hidden="true">A</span>
+	</button>
+	<span class="sr-only" aria-live="polite"></span>
+</theme-toggle>
+
+{/* Inlined so the correct icon and label are shown on first paint rather than flashing the default. */}
+<script is:inline>
+	(() => {
+		const stored = typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const choice = stored === 'light' || stored === 'dark' ? stored : 'auto';
+		document.querySelectorAll('theme-toggle').forEach((el) => el.setAttribute('data-choice', choice));
+	})();
+</script>
+
+<script>
+	type Theme = 'auto' | 'light' | 'dark';
+
+	const storageKey = 'starlight-theme';
+
+	const parseTheme = (theme: unknown): Theme => (theme === 'light' || theme === 'dark' ? theme : 'auto');
+
+	const loadTheme = (): Theme =>
+		parseTheme(typeof localStorage !== 'undefined' && localStorage.getItem(storageKey));
+
+	function storeTheme(theme: Theme): void {
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem(storageKey, theme === 'auto' ? '' : theme);
+		}
+	}
+
+	const preferredScheme = (): 'light' | 'dark' =>
+		matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+
+	/** Auto → opposite of system → same as system → Auto. */
+	function next(theme: Theme): Theme {
+		const system = preferredScheme();
+		if (theme === 'auto') return system === 'dark' ? 'light' : 'dark';
+		return theme === system ? 'auto' : system;
+	}
+
+	const describe = (theme: Theme): string =>
+		theme === 'auto' ? `auto (follows system, currently ${preferredScheme()})` : theme;
+
+	/** Sync every toggle on the page (desktop header and mobile menu) with the chosen theme. */
+	function render(theme: Theme): void {
+		document.querySelectorAll('theme-toggle').forEach((el) => {
+			el.setAttribute('data-choice', theme);
+			const button = el.querySelector('button');
+			button?.setAttribute('aria-label', `Theme: ${describe(theme)}. Switch to ${describe(next(theme))}.`);
+			button?.setAttribute('title', `Theme: ${theme}`);
+		});
+	}
+
+	function applyTheme(theme: Theme): void {
+		document.documentElement.dataset.theme = theme === 'auto' ? preferredScheme() : theme;
+		storeTheme(theme);
+		render(theme);
+	}
+
+	matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+		if (loadTheme() === 'auto') applyTheme('auto');
+	});
+
+	class ThemeToggle extends HTMLElement {
+		constructor() {
+			super();
+			render(loadTheme());
+			this.querySelector('button')?.addEventListener('click', () => {
+				const theme = next(loadTheme());
+				applyTheme(theme);
+				// Screen readers don't reliably re-read a focused button's changed label, so announce it explicitly.
+				const status = this.querySelector('[aria-live]');
+				if (status) status.textContent = `Theme: ${describe(theme)}`;
+			});
+		}
+	}
+	customElements.define('theme-toggle', ThemeToggle);
+</script>
+
+<style>
+	theme-toggle {
+		display: flex;
+		align-items: center;
+	}
+	button {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem;
+		margin: -0.5rem;
+		border: 0;
+		background: transparent;
+		color: var(--sl-color-gray-2);
+		cursor: pointer;
+	}
+	button:hover {
+		color: var(--sl-color-white);
+	}
+	/* :global because the class lands on Starlight's <Icon> component, which doesn't receive this file's scope. */
+	button :global(.icon) {
+		display: none;
+		font-size: 1.125rem;
+	}
+	/* Follow the theme actually applied to the page, which ThemeProvider sets before first paint. */
+	:global(:root[data-theme='light']) button :global(.light),
+	:global(:root[data-theme='dark']) button :global(.dark) {
+		display: block;
+	}
+	.auto-badge {
+		display: none;
+		position: absolute;
+		top: 0.125rem;
+		right: 0.0625rem;
+		font-size: 0.5625rem;
+		font-weight: 700;
+		line-height: 1;
+		padding: 0.0625rem 0.125rem;
+		border-radius: 0.1875rem;
+		background: var(--sl-color-bg-nav);
+		color: inherit;
+	}
+	theme-toggle[data-choice='auto'] .auto-badge {
+		display: block;
+	}
+</style>
