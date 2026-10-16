@@ -1,0 +1,198 @@
+---
+// Vertically scrolls through a list of roles once, then stops on the last one.
+// Accessibility:
+// - Screen readers get the full list as one static sentence; the animated words are aria-hidden, so nothing is
+//   announced every couple of seconds.
+// - A pause/replay button satisfies WCAG 2.2.2 (Pause, Stop, Hide), since the full run lasts longer than 5 seconds.
+// - With prefers-reduced-motion, words cross-fade in place instead of sliding.
+// - Without JavaScript, the first role is shown statically.
+interface Props {
+	roles: string[];
+}
+
+const { roles } = Astro.props;
+
+const toSentence = (items: string[]) =>
+	items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')}, and ${items.at(-1)}`;
+// Lowercase the first letter of every item after the first for the screen-reader sentence ("Technical writer, developer
+// advocate…"), leaving acronyms like "AI" and "UX/UI" alone.
+const lowerFirst = (role: string) => (/^[A-Z]{2}/.test(role) ? role : role.charAt(0).toLowerCase() + role.slice(1));
+const srText = toSentence(roles.map((role, i) => (i === 0 ? role : lowerFirst(role)))) + '.';
+---
+
+<role-scroller class="roles" data-state="idle">
+	<span class="sr-only">{srText}</span>
+	<span class="viewport" aria-hidden="true">
+		<span class="track">
+			{roles.map((role, i) => <span class="role" data-current={i === 0 ? '' : undefined}>{role}</span>)}
+		</span>
+	</span>
+	<button type="button" class="control" aria-label="Pause role animation" hidden>
+		<svg class="pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z" /></svg>
+		<svg class="play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+		<svg class="replay" viewBox="0 0 24 24" aria-hidden="true">
+			<path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z" />
+		</svg>
+	</button>
+</role-scroller>
+
+<script>
+	/** How long each role stays on screen before moving to the next one, in milliseconds. */
+	const HOLD_MS = 1800;
+
+	class RoleScroller extends HTMLElement {
+		#index = 0;
+		#timer: ReturnType<typeof setTimeout> | undefined;
+		#viewport = this.querySelector<HTMLElement>('.viewport');
+		#track = this.querySelector<HTMLElement>('.track');
+		#button = this.querySelector<HTMLButtonElement>('.control');
+		#count = this.querySelectorAll('.role').length;
+		// Re-measure the current role when its rendered size changes (web font loading, viewport-based font size).
+		#resizeObserver = new ResizeObserver(() => this.#fitToCurrent());
+
+		connectedCallback() {
+			if (!this.#track || !this.#button || this.#count < 2) return;
+			this.#button.hidden = false;
+			this.#button.addEventListener('click', () => this.#onControl());
+			this.querySelectorAll('.role').forEach((role) => this.#resizeObserver.observe(role));
+			this.#show(0);
+			this.#play();
+		}
+
+		disconnectedCallback() {
+			clearTimeout(this.#timer);
+			this.#resizeObserver.disconnect();
+		}
+
+		#setState(state: 'playing' | 'paused' | 'done') {
+			this.dataset.state = state;
+			const labels = { playing: 'Pause role animation', paused: 'Play role animation', done: 'Replay role animation' };
+			this.#button?.setAttribute('aria-label', labels[state]);
+		}
+
+		#show(index: number) {
+			this.#index = index;
+			this.#track?.style.setProperty('--index', String(index));
+			this.querySelectorAll('.role').forEach((role, i) => role.toggleAttribute('data-current', i === index));
+			this.#fitToCurrent();
+		}
+
+		/** Shrink/grow the visible slot to the current role so the control button stays next to the word. */
+		#fitToCurrent() {
+			const current = this.querySelector<HTMLElement>('.role[data-current]');
+			if (current) this.#viewport?.style.setProperty('width', `${current.offsetWidth}px`);
+		}
+
+		#play() {
+			this.#setState('playing');
+			this.#schedule();
+		}
+
+		#schedule() {
+			clearTimeout(this.#timer);
+			this.#timer = setTimeout(() => {
+				this.#show(this.#index + 1);
+				if (this.#index >= this.#count - 1) this.#setState('done');
+				else this.#schedule();
+			}, HOLD_MS);
+		}
+
+		#onControl() {
+			switch (this.dataset.state) {
+				case 'playing':
+					clearTimeout(this.#timer);
+					this.#setState('paused');
+					break;
+				case 'paused':
+					this.#play();
+					break;
+				case 'done':
+					this.#show(0);
+					this.#play();
+					break;
+			}
+		}
+	}
+	customElements.define('role-scroller', RoleScroller);
+</script>
+
+<style>
+	.roles {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: clamp(var(--sl-text-2xl), calc(0.5rem + 3vw), var(--sl-text-4xl));
+		font-weight: 600;
+		line-height: 1.2;
+		color: var(--sl-color-accent);
+	}
+
+	/* Clips the track to exactly one line, so only the current role is visible. */
+	.viewport {
+		display: block;
+		height: 1.2em;
+		overflow: hidden;
+		transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+	}
+
+	.track {
+		--index: 0;
+		display: flex;
+		flex-direction: column;
+		transform: translateY(calc(var(--index) * -1.2em));
+		transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+	}
+
+	.role {
+		display: block;
+		width: max-content;
+		height: 1.2em;
+		white-space: nowrap;
+	}
+
+	.control {
+		display: flex;
+		padding: 0.375rem;
+		border: 0;
+		border-radius: 999px;
+		background: transparent;
+		color: var(--sl-color-gray-3);
+		cursor: pointer;
+	}
+	.control[hidden] {
+		display: none;
+	}
+	.control:hover {
+		color: var(--sl-color-white);
+	}
+	.control svg {
+		display: none;
+		width: 1.25rem;
+		height: 1.25rem;
+		fill: currentColor;
+	}
+	.roles[data-state='playing'] .pause,
+	.roles[data-state='paused'] .play,
+	.roles[data-state='done'] .replay {
+		display: block;
+	}
+
+	/* Reduced motion: no sliding or fading. Every role sits in the same spot and only the current one is shown. */
+	@media (prefers-reduced-motion: reduce) {
+		.viewport,
+		.track {
+			transition: none;
+		}
+		.track {
+			display: grid;
+			transform: none;
+		}
+		.role {
+			grid-area: 1 / 1;
+			visibility: hidden;
+		}
+		.role[data-current] {
+			visibility: visible;
+		}
+	}
+</style>
